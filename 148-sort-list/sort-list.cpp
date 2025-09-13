@@ -27,35 +27,30 @@ public:
         return nHead->next;
     }
 
-    ListNode* mergeSort(ListNode* head){
+    ListNode* sortList(ListNode* head) {
 
+        if(head == NULL || head->next == NULL) return head;
+
+        //base case
         ListNode* slow = head;
         ListNode* fast = head;
-        
-        //base case
-        if(head->next == NULL){
-            return head;
-        }
 
         while(fast->next != NULL && fast->next->next != NULL){
             slow = slow->next;
             fast = fast->next->next;
         }
 
-        ListNode* sNext = slow->next;
+        ListNode* a = head;
+        ListNode* b = slow->next;
         slow->next = NULL;
 
-        ListNode* a = mergeSort(head);
-        ListNode* b = mergeSort(sNext);
 
-        ListNode* c = mergeList(a , b);
-        return c;
+        a = sortList(a);
+        b = sortList(b);
 
-    }
 
-    ListNode* sortList(ListNode* head) {
-        if(head == NULL) return NULL;
+        return mergeList(a,b);
+
         
-        return mergeSort(head);
     }
 };
