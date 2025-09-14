@@ -17,30 +17,21 @@ public:
     }
 
     bool isPalindrome(ListNode* head) {
-        //farzi node
-        ListNode *c = new ListNode(20);
+        ListNode* slow = head;
+        ListNode* fast = head;
 
-        //deep copy of head
-        ListNode* temp = head;
-        ListNode* tempC = c;
-
-        while(temp !=  NULL){
-            ListNode* node = new ListNode(temp->val);
-            tempC->next = node;
-            temp = temp->next;
-            tempC = tempC->next;
+        while(fast->next != NULL && fast->next->next != NULL){
+            slow = slow->next;
+            fast = fast->next->next;
         }
+        ListNode* sNext = slow->next;
+        slow->next = NULL;
 
-        c = c->next;
-        c = reverse(c);
-
-        ListNode* a = head;
-        ListNode* b = c;
-
-        while(a != NULL){
-            if(a->val != b->val) return false;
-            a = a->next;
-            b = b->next;
+        sNext = reverse(sNext);
+        while(sNext != NULL){
+            if(head->val != sNext->val) return false;
+            sNext = sNext->next;
+            head = head->next;
         }
         return true;
     }
