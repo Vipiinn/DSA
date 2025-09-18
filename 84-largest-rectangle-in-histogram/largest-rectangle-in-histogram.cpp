@@ -64,7 +64,8 @@ public:
         int ans = INT_MIN;
 
         for(int i=0;i<n;i++){
-            ans = max(ans,heights[i]*(ans1[i]-ans2[i]-1));
+            int width = ans1[i] - ans2[i] - 1;
+            ans = max(ans,heights[i] * width);
         }
         return ans;
         
