@@ -9,7 +9,7 @@ public:
 
         int j = 0;
         int count = 0;
-        while(q.size() != 0 && count != n){
+        while(q.size() != 0 && count != q.size()){
             if(q.front() == sandwiches[j]){
                 q.pop();
                 j++;
