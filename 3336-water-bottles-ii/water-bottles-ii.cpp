@@ -12,16 +12,16 @@ public:
         ans += full;
         empty += full;
         full = 0;
-        // if(empty >= numExchange){
-        //     ans++;
-        // }
-        // return ans;
-        while(empty >= numExchange){
-            empty -= numExchange;
-            full++;
-            numExchange++;
+        if(empty >= numExchange){
+            ans++;
         }
-        ans += full;
         return ans;
+        // while(empty >= numExchange){
+        //     empty -= numExchange;
+        //     full++;
+        //     numExchange++;
+        // }
+        // ans += full;
+        // return ans;
     }
 };
