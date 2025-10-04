@@ -2,7 +2,7 @@
 class Solution {
 public:
 
-    TreeNode* helper(vector<int>& post, int postLow, int postHi , vector<int>& in , int inLow , int inHi){
+    TreeNode* build(vector<int>& post, int postLow, int postHi , vector<int>& in , int inLow , int inHi){
         if(postLow > postHi) return NULL;
 
         TreeNode* root = new TreeNode(post[postLow]);
@@ -17,8 +17,8 @@ public:
         int leftCount = i - inLow;
         int rightCount = inHi - i;
 
-        root->right = helper(post, postLow+1, postLow+rightCount , in , i+1 , inHi);
-        root->left = helper(post, postLow+rightCount+1, postHi , in , inLow , i-1);
+        root->right = build(post, postLow+1, postLow+rightCount , in , i+1 , inHi);
+        root->left = build(post, postLow+rightCount+1, postHi , in , inLow , i-1);
 
         return root;
     }
@@ -26,6 +26,6 @@ public:
     TreeNode* buildTree(vector<int>& in, vector<int>& post) {
         int n = post.size();
         reverse(post.begin() , post.end());
-        return helper(post , 0 , n-1 , in , 0 , n-1);
+        return build(post , 0 , n-1 , in , 0 , n-1);
     }
 };
