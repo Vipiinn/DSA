@@ -2,21 +2,21 @@
 class Solution {
 public:
 
-    long long leftMax(TreeNode* root){
-        if(root == NULL) return LLONG_MIN;
-        return max((long long)(root->val) , max(leftMax(root->left) , leftMax(root->right)));
-    }
+    void preorder(TreeNode* root , vector<int>&ans){
+        if(root == NULL) return;
 
-    long long RightMin(TreeNode* root){
-        if(root == NULL) return LLONG_MAX;
-        return min((long long)(root->val) , min(RightMin(root->left) ,RightMin(root->right)));
+        preorder(root->left , ans);
+        ans.push_back(root->val);
+        preorder(root->right , ans);
     }
 
     bool isValidBST(TreeNode* root) {
+        vector<int>ans;
+        preorder(root , ans);
+        for(int i=1;i<ans.size();i++){
+            if(ans[i-1] >= ans[i]) return false;
+        }
 
-        if(root == NULL) return true;
-        
-        if((leftMax(root->left) >= (long long)(root->val) || (RightMin(root->right) <= (long long)(root->val)))) return false;
-        return isValidBST(root->left) && isValidBST(root->right);
+        return true;
     }
 };
