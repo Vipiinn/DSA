@@ -1,20 +1,23 @@
 
 class Solution {
 public:
-    int sum = 0;
-    void reverseInorder(TreeNode* root){
+    //without global variable
+    void reverseInorder(TreeNode* root , int &sum){
 
         if(root == NULL) return;
 
-        reverseInorder(root->right);
+        reverseInorder(root->right , sum);
+    
         root->val += sum;
         sum = root->val;
-        reverseInorder(root->left);
+
+        reverseInorder(root->left , sum);
 
     }
 
     TreeNode* bstToGst(TreeNode* root) {
-        reverseInorder(root);
+        int sum = 0;
+        reverseInorder(root , sum);
         return root;
     }
 };
