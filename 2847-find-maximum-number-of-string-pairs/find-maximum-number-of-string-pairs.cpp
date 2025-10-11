@@ -1,41 +1,24 @@
 class Solution {
 public:
-
-    string reverse(string str){
-        int i = 0;
-        int j = str.length() - 1;
-        bool flag = false;
-        while(i < j){
-            if(str[i] != str[j]){
-                swap(str[i] , str[j]);
-                flag = true;
-            }
-            i++;
-            j--;
-        }
-        if(flag == false) return "NO";
-        else return str;
-    }
-
     int maximumNumberOfStringPairs(vector<string>& words) {
-
         int n = words.size();
-        
         unordered_set<string>s;
+        int count = 0;
 
         for(int i=0;i<n;i++){
-            string str = reverse(words[i]);
-            if(str != "NO") words.push_back(str);
-        }
-
-        for(int i=0;i<words.size();i++){
             s.insert(words[i]);
         }
 
-        int ans = words.size() - s.size();
+        for(int i=0;i<n;i++){
+            string rev = words[i];
+            reverse(rev.begin(),rev.end());
+            if(rev == words[i]) continue;
+            if(s.find(rev) != s.end()){
+                count++;
+                s.erase(words[i]);
+            }
+        }
 
-        return ans / 2;
-
-
+        return count;
     }
 };
