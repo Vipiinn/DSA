@@ -4,14 +4,30 @@ public:
     bool isAnagram(string s, string t) {
 
         if(s.length() != t.length()) return false;
-        sort(s.begin() , s.end());
-        sort(t.begin() , t.end());
 
-        return s == t;
+        unordered_map<char,int> map;
+        
+
+        for(int i=0;i<s.length();i++){
+            map[s[i]]++;
+        }
+
+        for(int i=0;i<t.length();i++){
+            char ch = t[i];
+
+            if(map.find(ch) != map.end()){
+                map[ch]--;
+                if(map[ch] == 0) map.erase(ch);
+            }
+            else return false;
+        }
+
+        if(map.size() > 0) return false;
+        return true;
     }
 
     vector<string> removeAnagrams(vector<string>& words) {
-       
+       // int n = words.size();
         int i = 1;
         while(i < words.size()){
             if(isAnagram(words[i] , words[i-1])){
