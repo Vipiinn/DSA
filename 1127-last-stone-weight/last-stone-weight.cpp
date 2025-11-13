@@ -8,7 +8,7 @@ public:
             pq.push(stones[i]);
         }
 
-        while(pq.size() != 0 && pq.size() != 1){
+        while(pq.size() > 1){
             int x = pq.top();
             pq.pop();
             int y = pq.top();
