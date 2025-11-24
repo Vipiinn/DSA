@@ -10,10 +10,10 @@ public:
             return;
         }
 
+        SubsetSum(nums,idx+1,ds,ans);
         ds.push_back(nums[idx]);
         SubsetSum(nums,idx+1,ds,ans);
-        ds.pop_back();
-        SubsetSum(nums,idx+1,ds,ans);
+        //SubsetSum(nums,idx+1,ds,ans);
 
        
     }
