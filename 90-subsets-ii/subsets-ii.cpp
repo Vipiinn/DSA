@@ -1,31 +1,28 @@
 class Solution {
 public:
 
-    void SubsetSum(vector<int>& nums , int idx , vector<int>ds , set<vector<int>>& ans){
+    void findSubset(vector<int>& nums , int idx , vector<int>ds , vector<vector<int>>& ans){
 
         //base case
-        if(idx == nums.size()){
-            ans.insert(ds);
+        ans.push_back(ds);
 
-            return;
+        for(int i=idx;i<nums.size();i++){
+            if(i != idx && nums[i] == nums[i-1]) continue;
+            ds.push_back(nums[i]);
+            findSubset(nums,i+1,ds,ans);
+            ds.pop_back();
         }
-
-        SubsetSum(nums,idx+1,ds,ans);
-        ds.push_back(nums[idx]);
-        SubsetSum(nums,idx+1,ds,ans);
-        //SubsetSum(nums,idx+1,ds,ans);
-
        
     }
 
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         sort(nums.begin() , nums.end());
 
-        set<vector<int>>ans;
+        vector<vector<int>>ans;
         vector<int>ds;
 
-        SubsetSum(nums,0,ds,ans);
+        findSubset(nums,0,ds,ans);
 
-        return vector<vector<int>>(ans.begin() , ans.end());
+        return ans;
     }
 };
