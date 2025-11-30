@@ -2,25 +2,22 @@
 class Solution {
 public:
 
-    int maxDia = 0;
-
-    int levels(TreeNode* root){
+    int height(TreeNode* root , int& diameter){
         if(root == NULL) return 0;
-        return 1 + max(levels(root->left) , levels(root->right));
+
+        int lh = height(root->left , diameter);
+        int rh = height(root->right , diameter);
+
+        diameter = max(diameter , lh + rh);
+
+        return 1 + max(lh,rh);
     }
 
     int diameterOfBinaryTree(TreeNode* root) {
+        int diameter = 0;
 
-        //base case
-        if(root == NULL) return 0;
-    
-        int dia =  levels(root->left) + levels(root->right);
-        maxDia = max(maxDia , dia);
+        height(root , diameter);
 
-        diameterOfBinaryTree(root->left);
-        diameterOfBinaryTree(root->right);
-
-        return maxDia;
-        
+        return diameter;
     }
 };
