@@ -2,41 +2,38 @@
 class Solution {
 public:
 
-    int levels(TreeNode* root){
-        if(root == NULL) return 0;
-        return 1 + max(levels(root->left) , levels(root->right));
-    }
+    void levelOrder(TreeNode* root,vector<int>output,vector<vector<int>>&ans){
+        queue<TreeNode*>q;
+        q.push(root);
+        bool flag = true;
 
-    void nthOrder(TreeNode* root, int curr, int level, vector<int>& v) {
-    if(root == NULL) return;
-
-    if(curr == level) {
-        v.push_back(root->val);
-        return; // stop here
-    }
-
-    if(level % 2 == 0) { // even level → right to left
-        nthOrder(root->right, curr+1, level, v);
-        nthOrder(root->left, curr+1, level, v);
-    } else {             // odd level → left to right
-        nthOrder(root->left, curr+1, level, v);
-        nthOrder(root->right, curr+1, level, v);
-    }
-}
-
-
-    void levelOrder(TreeNode* root , vector<vector<int>>&ans){
-        int n = levels(root);
-        for(int i=1;i<=n;i++){
-            vector<int>v;
-            nthOrder(root,1,i,v);
-            ans.push_back(v);
+        while(q.size() > 0){
+            int level = q.size();
+            for(int i=0;i<level;i++){
+                TreeNode* temp = q.front();
+                output.push_back(temp->val);
+                q.pop();
+                if(temp->left) q.push(temp->left);
+                if(temp->right) q.push(temp->right);
+            }
+            if(flag == true){
+                ans.push_back(output);
+                flag = false;
+            }
+            else{
+                reverse(output.begin(),output.end());
+                ans.push_back(output);
+                flag = true;
+            }
+            output.clear(); 
         }
     }
 
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<int>output;
         vector<vector<int>>ans;
-        levelOrder(root , ans);
+        if(root == NULL) return ans;
+        levelOrder(root,output,ans);
         return ans;
     }
 };
