@@ -2,22 +2,35 @@
 class Solution {
 public:
 
-    int height(TreeNode* root , int& diameter){
+    int height(TreeNode* root){
         if(root == NULL) return 0;
 
-        int lh = height(root->left , diameter);
-        int rh = height(root->right , diameter);
+        int left = height(root->left);
+        int right = height(root->right);
 
-        diameter = max(diameter , lh + rh);
+        return max(left , right) + 1;
+    }
 
-        return 1 + max(lh,rh);
+    pair<int,int>Fast(TreeNode* root){
+        if(root == NULL) return {0 , 0};
+
+        pair<int,int> left = Fast(root->left);
+        pair<int,int> right = Fast(root->right);
+
+        int op1 = left.first;
+        int op2 = right.first;
+        int op3 = left.second + right.second + 1;
+
+        pair<int,int>ans;
+        ans.first = max(op1 , max(op2,op3));
+        ans.second = max(left.second , right.second) + 1;
+
+        return ans;
+
     }
 
     int diameterOfBinaryTree(TreeNode* root) {
-        int diameter = 0;
-
-        height(root , diameter);
-
-        return diameter;
+        
+        return Fast(root).first - 1;
     }
 };
