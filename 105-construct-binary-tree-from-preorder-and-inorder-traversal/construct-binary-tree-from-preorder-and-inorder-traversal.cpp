@@ -1,32 +1,40 @@
+
 class Solution {
 public:
 
-    TreeNode* build(vector<int>& pre, int preLow, int preHi, vector<int>& in, int inLow , int inHi){
-
-        if(preLow > preHi) return NULL;
-
-        TreeNode* root = new TreeNode(pre[preLow]);
-        if(preLow == preHi) return root;
-        
-        int i = inLow;
-        while(i <= inHi){
-            if(in[i] == pre[preLow]) break;
-            i++;
+    int findIdx(vector<int>& in , int val){
+        for(int i=0;i<in.size();i++){
+            if(in[i] == val) return i;
         }
 
-        int leftCount = i - inLow;
-        int rightCount = inHi - i;
+        return -1;
+    }
 
-        root->left = build(pre , preLow+1 , preLow+leftCount , in , inLow , i-1);
-        root->right = build(pre , preLow+leftCount+1 , preHi , in , i+1 , inHi);
+    TreeNode* constructTree(vector<int>& in , vector<int>& pre , int stIdx , int endIdx , int& preIdx){
+        //base case
+        if(stIdx > endIdx) return NULL;
 
-        return root;
+        TreeNode* temp = new TreeNode(pre[preIdx]);
+        preIdx++;
+
+        if(stIdx == endIdx) return temp;
+        int idx = findIdx(in,temp->val);
+
+        temp->left = constructTree(in,pre,stIdx,idx-1,preIdx);
+        temp->right = constructTree(in,pre,idx+1,endIdx,preIdx);
+
+        return temp;
     }
 
     TreeNode* buildTree(vector<int>& pre, vector<int>& in) {
-        int n = pre.size();
         
-        return build(pre , 0 , n-1 , in , 0 , n-1);
+        int n = pre.size();
+        int stIdx = 0;
+        int endIdx = n-1;
+        int preIdx = 0;
 
+        TreeNode* root = constructTree(in,pre,stIdx,endIdx,preIdx);
+
+        return root;
     }
 };
