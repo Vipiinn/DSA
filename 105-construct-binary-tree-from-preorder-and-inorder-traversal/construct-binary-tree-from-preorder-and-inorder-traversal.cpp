@@ -1,16 +1,10 @@
 
+// another approch using map 
+
 class Solution {
 public:
-
-    int findIdx(vector<int>& in , int val){
-        for(int i=0;i<in.size();i++){
-            if(in[i] == val) return i;
-        }
-
-        return -1;
-    }
-
-    TreeNode* constructTree(vector<int>& in , vector<int>& pre , int stIdx , int endIdx , int& preIdx){
+    TreeNode* constructTree(vector<int>& in , vector<int>& pre , int stIdx , int endIdx , int& preIdx,
+                                map<int,int>& mp){
         //base case
         if(stIdx > endIdx) return NULL;
 
@@ -18,10 +12,13 @@ public:
         preIdx++;
 
         if(stIdx == endIdx) return temp;
-        int idx = findIdx(in,temp->val);
+        int idx = -1;
+        if(mp.find(temp->val) != mp.end()){
+            idx = mp[temp->val];
+        }
 
-        temp->left = constructTree(in,pre,stIdx,idx-1,preIdx);
-        temp->right = constructTree(in,pre,idx+1,endIdx,preIdx);
+        temp->left = constructTree(in,pre,stIdx,idx-1,preIdx,mp);
+        temp->right = constructTree(in,pre,idx+1,endIdx,preIdx,mp);
 
         return temp;
     }
@@ -33,7 +30,12 @@ public:
         int endIdx = n-1;
         int preIdx = 0;
 
-        TreeNode* root = constructTree(in,pre,stIdx,endIdx,preIdx);
+        map<int,int>mp;
+        for(int i=0;i<n;i++){
+            mp[in[i]] = i;
+        }
+
+        TreeNode* root = constructTree(in,pre,stIdx,endIdx,preIdx,mp);
 
         return root;
     }
