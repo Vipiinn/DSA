@@ -2,27 +2,41 @@
 class Solution {
 public:
 
-    void build(TreeNode* root , int val){
-
-        if(root == NULL) return;
-
-        if(root->val > val){
-            if(root->left == NULL) root->left = new TreeNode(val);
-            else build(root->left , val);
+    int findIdx(vector<int>& in , int data){
+        for(int i=0;i<in.size();i++){
+            if(in[i] == data) return i;
         }
-        else{
-            if(root->right == NULL) root->right = new TreeNode(val);
-            else build(root->right , val);
-        }
+        return -1;
+    }
+
+    TreeNode* bstFromPreIn(vector<int>& pre , vector<int>& in , int stIn , int endIn , int& preIdx){
+
+        //base case
+        if(stIn > endIn) return NULL;
+
+        TreeNode* temp = new TreeNode(pre[preIdx]);
+        preIdx++;
+
+        int idx = findIdx(in , temp->val);
+
+        temp->left = bstFromPreIn(pre,in,stIn,idx-1,preIdx);
+        temp->right = bstFromPreIn(pre,in,idx+1,endIn,preIdx);
+
+        return temp;
+
     }
 
     TreeNode* bstFromPreorder(vector<int>& pre) {
-        TreeNode* root = new TreeNode(pre[0]);
-        int n = pre.size();
-        for(int i=1;i<n;i++){
-            build(root,pre[i]);
-        }
+        
+        vector<int>in(pre.begin() , pre.end());
+        sort(in.begin() , in.end());
 
-        return root;
+        int n = pre.size();
+
+        int stIn = 0;
+        int endIn = n-1;
+        int preIdx = 0;
+
+        return bstFromPreIn(pre,in,stIn,endIn,preIdx);
     }
 };
