@@ -1,42 +1,28 @@
-
+ // 3rd approch -> optimal approch
 class Solution {
 public:
 
-    int findIdx(vector<int>& in , int data){
-        for(int i=0;i<in.size();i++){
-            if(in[i] == data) return i;
-        }
-        return -1;
-    }
+    TreeNode* solve(vector<int>& pre , int mini , int maxi , int& idx){
+        //basev case
+        if(idx > pre.size()-1) return NULL;
+        if(pre[idx] < mini || pre[idx] > maxi) return NULL;
 
-    TreeNode* bstFromPreIn(vector<int>& pre , vector<int>& in , int stIn , int endIn , int& preIdx){
+        TreeNode* root = new TreeNode(pre[idx++]);
 
-        //base case
-        if(stIn > endIn) return NULL;
+        root->left = solve(pre,mini,root->val,idx);
+        root->right = solve(pre,root->val,maxi,idx);
 
-        TreeNode* temp = new TreeNode(pre[preIdx]);
-        preIdx++;
-
-        int idx = findIdx(in , temp->val);
-
-        temp->left = bstFromPreIn(pre,in,stIn,idx-1,preIdx);
-        temp->right = bstFromPreIn(pre,in,idx+1,endIn,preIdx);
-
-        return temp;
-
+        return root;
+        
     }
 
     TreeNode* bstFromPreorder(vector<int>& pre) {
         
-        vector<int>in(pre.begin() , pre.end());
-        sort(in.begin() , in.end());
+        int mini = INT_MIN;
+        int maxi = INT_MAX;
 
-        int n = pre.size();
+        int i = 0;
 
-        int stIn = 0;
-        int endIn = n-1;
-        int preIdx = 0;
-
-        return bstFromPreIn(pre,in,stIn,endIn,preIdx);
+        return solve(pre,mini,maxi , i);
     }
 };
