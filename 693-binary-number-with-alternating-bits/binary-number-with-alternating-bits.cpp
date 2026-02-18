@@ -1,22 +1,18 @@
 class Solution {
 public:
     bool hasAlternatingBits(int n) {
-        string str = "";
-        if(n%2 == 0) str += '0';
-        else str += '1';
+        int prev = n & 1;
         n = n >> 1;
 
         while(n > 0){
-            char ch;
-            if(n%2 == 0) ch = '0';
-            else ch = '1';
+            int curr = n & 1;
 
-            if(ch == str[str.length()-1]) return false;
+            if(prev == curr) return false;
 
-            str += ch;
+            prev = curr;
 
             n = n >> 1;
-        } 
+        }
 
         return true;
     }
