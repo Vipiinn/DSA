@@ -14,7 +14,7 @@ public:
                 s.erase(i , 1); 
                 open = 0;
                 close = 0;
-                if(i - 1 > 0) delIdx = i - 1;
+                delIdx = i - 1;
             }
         }
 
